@@ -1,0 +1,120 @@
+# IMPORTANT: velocity in testing (modifiable)
+velocity: 6.0
+
+# IMPORTANT: vel_max and acc_max in training
+# not the actual values in testing, ensure consistency between testing and training, please refer to ../policy/primitive.py
+vel_max_train: 6.0
+acc_max_train: 6.0
+
+# IMPORTANT: weight of costs for unit speed (can be visualized in tensorboard)
+wg: 0.15   # guidance     (approaching the goal)
+ws: 10.0   # smoothness   (smaller jerk)
+wa: 1.0    # acceleration (smaller acceleration)
+wc: 1.0    # collision    (distance to obstacle)
+
+# dataset: set image_size = primitive_num × downsampling_factor (×32 for ResNet-18) in each axis
+dataset_path: "../dataset"
+image_height: 96
+image_width: 160
+
+# continuous-frame dynamic YOPO
+history_length: 4
+relative_pose_dim: 18
+relative_pose_feature_dim: 32
+relative_translation_scale: 0.2
+relative_rotation_scale: 0.1
+temporal_frame_feature_dim: 64
+temporal_gru_hidden_dim: 64
+temporal_step_pose_dim: 8
+temporal_eval_points: 30
+temporal_peak_weight: 1.0
+temporal_score_regression_weight: 0.5
+temporal_score_ranking_weight: 1.0
+temporal_score_temperature: 1.0
+temporal_collision_rank_penalty: 10.0
+temporal_margin_rank_penalty: 2.0
+temporal_aux_risk_weight: 0.5
+temporal_aux_motion_weight: 5.0
+temporal_aux_presence_weight: 1.0
+temporal_aux_frozen_weight: 1.0
+temporal_aux_positive_weight: 8.0
+temporal_aux_score_gain: 1.0
+temporal_critical_clearance: 1.5
+temporal_critical_sampling_weight: 5.0
+temporal_motion_critical_advantage: 0.25
+temporal_validation_samples_per_episode: 2048
+drone_radius: 0.3
+temporal_map_half_extent_xy: [30.0, 30.0]
+temporal_map_ceiling: 5.5
+temporal_dataset_paths:
+  static: "../dataset_static"
+  mixed: "../dataset_mixed_independent"
+  dynamic: "../dataset_dynamic_independent"
+scenario_sampling:
+  static: 0.30
+  mixed: 0.30
+  dynamic: 0.40
+
+# static-dynamic geometry-aware YOPO
+sd_frame_offsets: [6, 3, 0]
+sd_history_length: 3
+sd_relative_pose_dim: 12
+sd_camera_fx: 80.0
+sd_camera_fy: 85.333333
+sd_camera_cx: 80.0
+sd_camera_cy: 48.0
+sd_max_depth: 20.0
+sd_residual_scale: 1.0
+sd_occlusion_threshold: 0.15
+sd_velocity_scale: 3.0
+sd_velocity_loss_weight: 1.0
+sd_dataset_paths:
+  static: "../dataset_static_sd"
+  mixed: "../dataset_mixed_sd"
+  dynamic: "../dataset_dynamic_sd"
+sd_future_bins: 3
+sd_dynamic_score_gain: 1.0
+sd_mask_loss_weight: 0.5
+sd_future_risk_weight: 1.0
+sd_score_regression_weight: 0.5
+sd_score_ranking_weight: 1.0
+sd_safety_ranking_weight: 2.0
+sd_score_ranking_temperature: 1.0
+sd_collision_rank_penalty: 10.0
+sd_margin_rank_penalty: 2.0
+sd_collision_score_margin: 1.0
+sd_validation_samples_per_episode: 1024
+
+# trajectory and primitive param (Note: traj_time = 2 * radio / vel_max) (can be visualized in rviz)
+horizon_num: 5
+vertical_num: 3
+horizon_camera_fov: 90.0
+vertical_camera_fov: 60.0
+horizon_anchor_fov: 30.0
+vertical_anchor_fov: 30.0
+radio_range: 5.0    # planning horizon: 2 * radio_range
+radio_num: 1        # only support 1 currently
+
+# safety penalties
+d0: 1.2
+r: 0.6
+
+# distribution for unit state sampling (can be visualized by 'python ./policy/yopo_dataset.py')
+vx_mean_unit: 0.4
+vy_mean_unit: 0.0
+vz_mean_unit: 0.0
+vx_std_unit: 2.0
+vy_std_unit: 0.45
+vz_std_unit: 0.3
+ax_mean_unit: 0.0
+ay_mean_unit: 0.0
+az_mean_unit: 0.0
+ax_std_unit: 0.5
+ay_std_unit: 0.5
+az_std_unit: 0.3
+goal_pitch_std: 10.0  # clip goal_length to: 2 * radio_range; 10% probability [0, 2 * radio_range]
+goal_yaw_std: 20.0
+
+# extend the map to avoid trajectory exceeding bounds (especially in z-axis) and treating the sky outside the map as obstacle
+map_expand_min: [0, 0, 0.2]
+map_expand_max: [0, 0, 6.0]

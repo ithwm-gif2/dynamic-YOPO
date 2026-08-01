@@ -1,0 +1,29 @@
+schema_version: 1
+episode: 0
+seed: 123
+frames: 180
+frame_rate: 33
+history_length: 4
+future_horizon: 1.7
+future_frames: 57
+valid_frame_start: 3
+valid_frame_end: 122
+map_size: [60, 60, 15]
+obstacle_count: 120
+requested_area_per_obstacle: 30
+actual_area_per_obstacle: 30
+obstacle_speed_range: [0.5, 3]
+obstacle_shape: axis_aligned_box
+obstacle_drone_reflection_margin: 0.05
+static_geometry: ground_plane
+all_obstacles_moving: true
+camera:
+  fx: 80
+  fy: 80
+  cx: 80
+  cy: 45
+  width: 160
+  height: 90
+  max_depth: 20
+depth_encoding: uint16_normalized_0_65535
+relative_pose_convention: T_camera_previous_camera_current

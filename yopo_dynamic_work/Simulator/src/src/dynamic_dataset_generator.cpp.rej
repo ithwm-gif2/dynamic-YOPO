@@ -1,0 +1,11 @@
+--- yopo_dynamic_work/Simulator/src/src/dynamic_dataset_generator.cpp
++++ yopo_dynamic_work/Simulator/src/src/dynamic_dataset_generator.cpp
+@@ -311,3 +311,8 @@
+         1, static_cast<int>(std::lround(cfg.map_x * cfg.map_y / cfg.area_per_obstacle)));
+     std::vector<MovingObstacle> obstacles;
+     obstacles.reserve(obstacle_count);
++    const int dynamic_count = static_cast<int>(
++        std::lround(cfg.dynamic_ratio * obstacle_count));
++    std::vector<bool> dynamic_flags(obstacle_count, false);
++    std::fill(dynamic_flags.begin(), dynamic_flags.begin() + dynamic_count, true);
++    std::shuffle(dynamic_flags.begin(), dynamic_flags.end(), rng);

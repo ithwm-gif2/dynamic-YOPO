@@ -1,0 +1,2 @@
+episode,seed,frames,obstacle_count,min_clearance,collision_frames
+episode_0000,123,180,120,0.885759,0
